@@ -1,0 +1,17 @@
+char * mergeAlternately(char * word1, char * word2){
+    int len1 = strlen(word1),len2 = strlen(word2);
+    char *merged = (char*)malloc((len1+len2+1)*sizeof(char));
+    int i=0,j=0,s=0;
+    while(i<len1 && j<len2){
+        merged[s++]=word1[i++];
+        merged[s++]=word2[j++];
+    }
+    while(i<len1){
+        merged[s++]=word1[i++];
+    }
+     while(j<len2){
+        merged[s++]=word2[j++];
+    }
+    merged[s]='\0';
+ return merged;
+}
