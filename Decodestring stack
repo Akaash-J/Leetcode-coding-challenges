@@ -1,0 +1,54 @@
+char* decodeString(char* s) {
+    int len = strlen(s), top = -1, stackSize = len*2;
+    char *stack = (char*)malloc((len*10)*sizeof(char));
+    for(int i=0; i<len; i++){
+        if(s[i] == ']'){
+            int tempsize = 128;
+            char *temp =(char*)malloc(tempsize*sizeof(char));
+            int index = 0;
+            while(top>=0 && stack[top]!='['){
+                if(index >= tempsize-1){
+                    tempsize*=2;
+                    temp = (char*)realloc(temp, tempsize*sizeof(char));
+                }
+                temp[index++]=stack[top--];
+            } 
+            top--;
+            temp[index]='\0';
+            char *reverse = (char*)malloc((index+1)*sizeof(char));
+            for(int j=0; j<index; j++){
+                reverse[j] = temp[index-j-1];
+            }
+            reverse[index] = '\0';
+            free(temp);
+            int num = 0, base = 1;
+            while(top>=0 && isdigit(stack[top])){
+                num =num+(stack[top--]-'0')*base;
+                base*=10;
+            }
+            for(int b=0; b<num; b++){
+                for(int j=0; j<index; j++){
+                    if(top>= stackSize-1){
+                        stackSize*=2;
+                        stack = (char*)realloc(stack, stackSize*sizeof(char));
+                    }
+                    stack[++top] = reverse[j];
+                }
+                
+            }
+            free(reverse);
+        }else{
+             if(top>= stackSize-1){
+                        stackSize*=2;
+                        stack = (char*)realloc(stack, stackSize*sizeof(char));
+            }
+            stack[++top] = s[i];
+        }
+    }
+            if(top>= stackSize-1){
+                stackSize += 1;
+                stack = (char*)realloc(stack, stackSize*sizeof(char));
+            }
+    stack[++top]='\0';
+    return stack;
+}
